@@ -23,6 +23,10 @@ public class NotifyAllTest {
             // 主线程等待唤醒。
             System.out.println(Thread.currentThread().getName()+" notifyAll()");
             obj.notifyAll();
+            /**
+             *   在执行了notify方法之后，当前线程不会马上释放该对象锁，呈wait状态的线程也不能马上获得该对象锁，
+             要等到执行notify方法的线程将程序执行完 ，也就是退出sychronized代码块后，当前线程才会释放锁
+             */
         }
     }
 
