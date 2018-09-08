@@ -11,6 +11,7 @@ package com.cx.juclock.condition;
  *
  * Condition除了支持上面的功能之外，它更强大的地方在于：能够更加精细的控制多线程的休眠与唤醒。
  * 对于同一个锁，我们可以创建多个Condition，在不同的情况下使用不同的Condition。(生产者消费者与仓库的例子)
+ *
  */
 public class Concept {
 }
