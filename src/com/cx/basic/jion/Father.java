@@ -17,6 +17,8 @@ package com.cx.basic.jion;
  *  当millis==0时，会进入while(isAlive())循环；即只要子线程是活的，主线程就不停的等待。
  *  wait(0);停止的是当前线程，也就是父线程
  *
+ *  面试：有三个线程T1，T2，T3，怎么确保它们按顺序执行？ 用join。
+ *
 
  }
  */
