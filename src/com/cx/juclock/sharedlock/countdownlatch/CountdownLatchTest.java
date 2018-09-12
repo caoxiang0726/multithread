@@ -19,6 +19,9 @@ public class CountdownLatchTest {
                         mainLatch.await();
                         System.out.println( Thread.currentThread().getName() +
                                 "running2");
+                        /**
+                         * 去卡主线程
+                         */
                         /*Thread.sleep((long) (Math.random() * 10000));
                         System.out.println("线程" + Thread.currentThread().getName() +
                                 "回应命令处理结果");
