@@ -1,24 +1,30 @@
 package com.cx.juclock.sharedlock.countdownlatch;
 
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //这里演示了一个人通知多个人；也可以多个人同事搞定才通知一个人
 public class CountdownLatchTest {
+    static ConcurrentHashMap<String,Boolean> concurrentHashMap = new ConcurrentHashMap();
     public static void main(String[] args) {
-        ExecutorService service = Executors.newCachedThreadPool();
+        ExecutorService pool = Executors.newCachedThreadPool();
         final CountDownLatch mainLatch = new CountDownLatch(1);
         final CountDownLatch cdAnswer = new CountDownLatch(3);
-        for (int i = 0; i < 3; i++) {
+
+         for (int i = 0; i < 3; i++) {
             Runnable runnable = new Runnable() {
                 public void run() {
                     try {
                         System.out.println(Thread.currentThread().getName() +
-                                "running");
+                                "-running-step0");
+                        //
+                        concurrentHashMap.put(Thread.currentThread().getName(),Math.random()>0.5);
                         mainLatch.await();
                         System.out.println( Thread.currentThread().getName() +
-                                "running2");
+                                "-running-step2");
                         /**
                          * 去卡主线程
                          */
@@ -31,13 +37,20 @@ public class CountdownLatchTest {
                     }
                 }
             };
-            service.execute(runnable);
+            pool.execute(runnable);
         }
 
         try {
+            /**
+             * 还必须要有 这个等待时间。
+             */
             Thread.sleep((long) (Math.random() * 10000));
             System.out.println(Thread.currentThread().getName() +
-                    "running1");
+                    "-running-step1");
+            Collection<Boolean> booleans = concurrentHashMap.values();
+            if (booleans.contains(false)) {
+                System.out.println("有事务未提交");
+            }
             mainLatch.countDown();
 
             /*System.out.println("线程" + Thread.currentThread().getName() +
@@ -48,6 +61,6 @@ public class CountdownLatchTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        service.shutdown();
+        pool.shutdown();
     }
 }
